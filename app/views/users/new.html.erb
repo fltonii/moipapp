@@ -1,0 +1,70 @@
+<%= form_tag users_path do %>
+  <article>
+    <% if flash[:error].present? %>
+      <div id="error_explanation">
+        <p><%= flash[:error] %></p>
+      </div>
+    <% end %>
+
+    <h3>
+      <%= tag.label 'Nome Completo do Cliente' %><br>
+      <%= tag.input type: 'text', name: 'user[fullname]',
+      value: 'Jose da Silva', size: 40, id: :userFullName %>
+    </h3>
+
+    <h3>
+      <%= tag.label 'Email do Cliente' %><br>
+      <%= tag.input type: 'text', name: 'user[email]',
+          value: 'jose_da_silva@gmail.com', size: 40, id: :userEmail %>
+    </h3>
+
+    <h3>
+      <%= tag.label 'Data de Nascimento' %><br>
+      <%= tag.input type: 'text', name: 'user[birthDate]',
+      value: '1997-06-09', size: 10, id: :userBirthDate %>
+    </h3>
+
+    <h3>
+      <%= tag.label 'CPF' %><br>
+      <%= tag.input type: 'text', name: 'users[cpf]',
+      value: '12345678910', size: 9, id: :userDocument %>
+    </h3>
+    <h4>Dados de contato</h4>
+    <h3>
+      <%= tag.label 'Codigo de Área' %><br>
+      <%= tag.input type: 'text', name: 'users[areaCode]',
+      value:'54', size: 2, id: :userAreaCode %>
+    </h3>
+    <h3>
+      <%= tag.label 'Numero do telefone' %><br>
+      <%= tag.input type: 'text', name: 'users[phoneNumber]',
+      value: '992235596', size: 9, id: :userPhoneNumber %>
+    </h3>
+    <h4>Dados de pagamento: </h4>
+    <h3>
+      <%= tag.label 'Numero do cartão' %><br>
+      <%= tag.input type: 'text', name: 'cc[number]',
+      value: '5555666677778884', size: 16, id: :ccNumber %>
+    </h3>
+    <h3>
+      <%= tag.label 'mes' %><br>
+      <%= tag.input type: 'text', name: 'cc[expirationMonth]',
+      value: '06', size: 2, id: :ccMonth %><br>
+      <%= tag.label 'ano' %><br>
+      <%= tag.input type: 'text', name: 'cc[expirationYear]',
+      value: '22', size: 2, id: :ccYear %>
+    </h3>
+    <h3>
+      <%= tag.label 'ccv' %><br>
+      <%= tag.input type: 'text', name: 'cc[cvc]',
+      value: '123', size: 3, id: :ccCcv %>
+    </h3>
+
+    <p>
+      <%= tag.button type: :submit do %>
+        Confirma
+      <% end %>
+    </p>
+  </article>
+
+<% end %>

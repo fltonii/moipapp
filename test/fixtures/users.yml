@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  moipid: MyString
+  ccid: MyString
+
+two:
+  moipid: MyString
+  ccid: MyString
