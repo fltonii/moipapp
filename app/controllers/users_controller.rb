@@ -3,26 +3,25 @@ class UsersController < ApplicationController
   end
 
   def create
-	api = Moip.new.call
-  uniqueId = SecureRandom.hex
-  customer = api.customer.create(
-  		ownId: uniqueId,
-  		email: params[:user][:email],
-  		fullname: params[:user][:fullname],
-  		birthDate: params[:user][:birthDate],
-  		taxDocument: {
-            type: "CPF",
-            number: params[:user][:cpf],
-        },
-	    phone: {
-	      countryCode: "55",
-	      areaCode: params[:user][:areaCode],
-	      number: params[:user][:phoneNumber],
-	    },
+  	api = Moip.new.call
+    uniqueId = SecureRandom.hex
+    customer = api.customer.create(
+    		ownId: uniqueId,
+    		email: params[:user][:email],
+    		fullname: params[:user][:fullname],
+    		birthDate: params[:user][:birthDate],
+    		taxDocument: {
+              type: "CPF",
+              number: params[:user][:cpf],
+          },
+  	    phone: {
+  	      countryCode: "55",
+  	      areaCode: params[:user][:areaCode],
+  	      number: params[:user][:phoneNumber],
+  	    },
 
-    )
-
-    @moipid = customer.id
+      )
+      @moipid = customer.id
 
     card = api.customer.add_credit_card(@moipid, {
        method: "CREDIT_CARD",
@@ -48,6 +47,14 @@ class UsersController < ApplicationController
      })
      @ccid = card.credit_card.id
 
-     User.create(moipid: @moipid, ccid: @ccid)
+     User.create(
+       fullname: params[:user][:fullname],
+       email: params[:user][:email],
+       ownid: uniqueId,
+       phoneArea: params[:user][:areaCode],
+       cpf: params[:user][:cpf],
+       phoneNumber: params[:user][:phoneNumber],
+       moipid: @moipid,
+     )
   end
 end

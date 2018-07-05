@@ -5,40 +5,42 @@ class OrdersController < ApplicationController
   def create
     @api ||= Moip.new.call
     @order = @api.order.create(order_json)
+    @payment = @api.payment.create(@order.id, payment_json)
   end
 
   private
 
   def order_json
+    user = User.last
+    uniqueId = SecureRandom.hex
     {
-      ownId: params[:order][:ownId],
+      ownId: uniqueId,
       amount: {
         currency: 'BRL',
         subtotals: {
-          shipping: 1500
+          shipping: 0
         }
       },
       items: [
         {
-          product: params[:order][:product],
+          product: 'recarga',
           category: 'OTHER_CATEGORIES',
           quantity: 1,
-          detail: 'Evento, 2018',
-          price: 10000
+          price: params[:order][:amout].to_i*100,
         }
       ],
         customer: {
-        ownId: params[:order][:customerOwnId],
-        fullname: params[:order][:customerFullName],
-        email: params[:order][:customerEmail],
+        ownId: user.ownid,
+        fullname: user.fullname,
+        email: user.email,
         taxDocument: {
           type: 'CPF',
-          number: '11122233344'
+          number: user.cpf,
         },
         phone: {
           countryCode: '55',
-          areaCode: '11',
-          number: '55555555'
+          areaCode: user.phoneArea,
+          number: user.phoneNumber,
         },
         shippingAddress: {
           street: 'Avenida 23 de Maio',
@@ -47,9 +49,28 @@ class OrdersController < ApplicationController
           district: 'Centro',
           state: 'SP',
           country: 'BRA',
-          zipCode: '01244500'
+          zipCode: '01244500',
         }
       }
     }
   end
+
+  def payment_json
+    {
+      installment_count: 1,
+      funding_instrument: {
+        credit_card: {
+          id: @order.customer.funding_instrument.credit_card.id,
+          brand: @order.customer.funding_instrument.credit_card.brand,
+          first6: @order.customer.funding_instrument.credit_card.first6,
+          last4: @order.customer.funding_instrument.credit_card.last4,
+          store: @order.customer.funding_instrument.credit_card.store,
+          cvc: 123,
+        },
+        method: 'CREDIT_CARD',
+      }
+    }
+  end
 end
+
+# @order.customer.funding_instrument

@@ -10,13 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_04_212312) do
+ActiveRecord::Schema.define(version: 2018_07_05_191730) do
 
   create_table "users", force: :cascade do |t|
     t.string "moipid"
-    t.string "ccid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cpf"
+    t.string "phoneArea"
+    t.string "phoneNumber"
+    t.string "ownid"
+    t.string "fullname"
+    t.string "email"
   end
 
 end
